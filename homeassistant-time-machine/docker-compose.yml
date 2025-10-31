@@ -1,13 +1,32 @@
 version: '3.8'
 
 services:
-  app:
+  timemachine:
     build: .
-    ports:
-      - "54000:54000"
-    volumes:
-      - .:/app
+    container_name: timemachine
     environment:
-      - NODE_ENV=development
-      - HOST=0.0.0.0
-    restart: unless-stopped
+      HOME_ASSISTANT_URL: ${HA_URL}
+      LONG_LIVED_ACCESS_TOKEN: ${HA_TOKEN}
+      NODE_ENV: development
+    hostname: timemachine
+    networks:
+      docker1:
+        ipv4_address: ${HOST_IP}
+    ports:
+      - 54000:54000
+    restart: always
+    volumes:
+      - data:/data
+      - media:/media
+      - ${HA_CONFIG}:/config:ro
+
+networks:
+  docker1:
+    name: docker1
+    external: true
+
+volumes:
+  data:
+    driver: local
+  media:
+    driver: local
