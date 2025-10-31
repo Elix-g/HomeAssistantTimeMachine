@@ -18,7 +18,7 @@ services:
     volumes:
       - data:/data
       - media:/media
-      - ${HA_CONFIG}:/config:ro
+      - /var/lib/docker/volumes/homeassistant_config/_data:/config:ro
 
 networks:
   docker1:
